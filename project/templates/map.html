@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('main.map_page') }}">
+    {# No WTForms form provided here; remove undefined 'form' usage. If you add Flask-WTF later,
+       replace this with {{ form.csrf_token }} and pass the form instance from the view. #}
+    <label for="topic">Enter a topic for your mind map:</label>
+    <input type="text" id="topic" name="topic" required>
+    <button type="submit">Generate Mind Map</button>
+</form>
+{% endblock %}

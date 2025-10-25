@@ -15,7 +15,7 @@ h6 {
   padding-top: 0;
   padding-bottom: 0;
   /* border-bottom: 2px solid #2e3440; */
-  font-family: 'Open Sans', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   display: flex;
   justify-content: center;
   /* edit me when more stuff is added, like logo incase you want to left justify*/
