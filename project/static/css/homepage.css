@@ -1,0 +1,86 @@
+.center-cropped {
+  width: auto;
+  height: 450px;
+  object-fit: cover;
+}
+
+.back {
+  background: rgba(49, 49, 49, 0.5);;
+  /* Mozilla */
+  /* CSS3 */
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.body {
+  height: 100%;
+}
+
+.aside {
+  /* border: 1px yellow solid; */
+  position: fixed;
+  overflow: auto;
+  height: calc(100vh - 68px);
+  justify-content: flex-start;
+  align-self: flex-start;
+
+}
+
+.main {
+  position: relative;
+  overflow: auto;
+  margin-left: auto;
+  justify-content: flex-end;
+  align-self: flex-end;
+}
+
+#sidebarshow {
+  display: none;
+
+}
+
+@media screen and (max-width: 575px) {
+  #sidebarshow {
+    display: inline;
+  }
+
+  #sidebartoggle {
+    display: none;
+  }
+}
+
+.resize-200 {
+  height: 200px;
+  width: auto;
+  object-fit: cover;
+}
+
+.resize-550 {
+  height: 550px;
+  width: auto;
+  object-fit: cover;
+}
+
+
+.resize-300 {
+  height: 300px;
+  width: auto;
+  object-fit: cover;
+}
+
+.resize-50 {
+  height: 50px;
+  width: auto;
+  object-fit: cover;
+}
