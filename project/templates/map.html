@@ -5,12 +5,33 @@
 {% endblock %}
 
 {% block content %}
-
-<form method="POST" enctype="multipart/form-data" action="{{ url_for('main.map_page') }}">
-    {# No WTForms form provided here; remove undefined 'form' usage. If you add Flask-WTF later,
-       replace this with {{ form.csrf_token }} and pass the form instance from the view. #}
-    <label for="topic">Enter a topic for your mind map:</label>
-    <input type="text" id="topic" name="topic" required>
-    <button type="submit">Generate Mind Map</button>
-</form>
+<div class="form-container">
+    <h2>Create Your Mind Map</h2>
+    
+    <form method="POST" action="{{ url_for('main.map_page') }}">
+        {{ form.hidden_tag() }}  {# CSRF token #}
+        
+        <div class="form-group">
+            {{ form.topic.label(class="form-label") }}
+            {{ form.topic(class="form-input", placeholder="e.g., Machine Learning, Climate Change, etc.") }}
+            
+            {% if form.topic.errors %}
+                <div class="error-messages">
+                    {% for error in form.topic.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        {{ form.submit(class="btn-primary") }}
+    </form>
+    
+    {% if topic %}
+    <div class="result">
+        <h3>Mind Map for: {{ topic }}</h3>
+        <!-- Your mind map content will go here -->
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
