@@ -1,0 +1,10 @@
+/* a tag info */
+
+.navbar .navbar-menu .navbar-item {
+  color: #ffffff;
+}
+
+.navbar-menu a:hover {
+  background-color: #2e3440;
+  color: #eceff4;
+}

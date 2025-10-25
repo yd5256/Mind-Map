@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flask Auth Example</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block head %}{% endblock %}
 </head>
 
 <body>
@@ -51,6 +53,8 @@
             </div>
         </div>
     </section>
+    <!-- Load page scripts after DOM so scripts that query the DOM (stars) run correctly -->
+    <script src="{{ url_for('static', filename='custom.js') }}"></script>
 </body>
 
 </html>

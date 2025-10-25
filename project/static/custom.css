@@ -1,10 +1,11 @@
 /* Changing fonts globally */
-body {
-  padding: 0;
-  font-family: 'Open Sans', sans-serif;
-}
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Roboto', sans-serif;
 }
 
@@ -16,7 +17,8 @@ h1, h2, h3, h4, h5, h6 {
   /* border-bottom: 2px solid #2e3440; */
   font-family: 'Open Sans', sans-serif;
   display: flex;
-  justify-content: center; /* edit me when more stuff is added, like logo incase you want to left justify*/
+  justify-content: center;
+  /* edit me when more stuff is added, like logo incase you want to left justify*/
   align-items: center;
   height: 100%;
 }
@@ -34,12 +36,12 @@ h1, h2, h3, h4, h5, h6 {
 
 /* a tag info */
 .navbar-menu a {
-  color: #3b4252;
+  color: #ffffff;
   padding: 0.75rem 3rem;
   text-decoration: none;
   flex: 1;
   transition: background-color 0.3s ease;
-  white-space: nowrap; 
+  white-space: nowrap;
   line-height: 2;
 }
 

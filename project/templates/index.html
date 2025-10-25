@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block content %}
-<h1 class="title">
-  Flask Login Example
-</h1>
-<h2 class="subtitle">
-  Easy authentication and authorization in Flask.
-</h2>
+<div class="stars" id="stars"></div>
+<div class="planet"></div>
+
+<div class="content">
+  <h1 class="title">
+    MindSpace
+  </h1>
+</div>
 {% endblock %}
