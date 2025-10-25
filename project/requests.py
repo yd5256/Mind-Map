@@ -1,7 +1,7 @@
 import requests, json
 
-api_key = #
-agent_url = #
+api_key = key
+agent_url = url
 run_id = requests.post(agent_url)
 
 
