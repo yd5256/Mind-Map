@@ -47,7 +47,7 @@ def signup_post():
     flash('Email address already exists')
     return redirect(url_for('auth.signup'))
 
-  email_regex = re.compile(r"[A-Za-z]+@[A-Za-z]\.[A-Za-z]{2,}")
+  email_regex = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
   if not email_regex.match(email):
       flash('Please use a valid email')

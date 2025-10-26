@@ -23,6 +23,7 @@ def index():
   return render_template('index.html')
 
 @main.route('/map', methods=['GET', 'POST'])
+@login_required
 def map_page():
     big_to_small_form = BigToSmallForm()
     
@@ -58,9 +59,8 @@ def map_page():
             if get_response.status_code == 200:
                 subtopics = get_response.json().get("response")
             else:
-                subtopics = ["Error", "Error", "Error"]
-            print(subtopics)
-            
+                subtopics = ["Error Subtopic 1", "Error Subtopic 2", "Error Subtopic 3"]
+
             subtopics = subtopics['subtopics']
 
 
@@ -99,12 +99,37 @@ def map_page():
             
             if subtopic:
                 # TODO: Generate 3 sources for this subtopic
+
+                api_key = "3dSjaKpyDOMNioQeCnWhzVTNPCRfyE5OiSOB1704zHcGJvNTeRJ1CpaJAl18cUoj"
+                post_url = "https://api.agent.ai/v1/agent/n1mcu1mwrricwrfk/webhook/0476b719/async"
+                get_url = "https://api.agent.ai/v1/agent/n1mcu1mwrricwrfk/webhook/0476b719/status/"
+
+                post_response = requests.post(post_url, json={"subtopic": subtopic, "num_sources": 3}, headers={"x-api-key": api_key, "Content-Type": "application/json"})
+                run_id = post_response.json().get("run_id")
+
+                get_response = requests.get(f"{get_url}/{run_id}", headers={"x-api-key": api_key, "Content-Type": "application/json"})
+                timeout = 0
+                while (get_response.status_code == 204) and (timeout < 60):
+                    timeout += 5
+                    sleep(5)
+                    get_response = requests.get(f"{get_url}/{run_id}", headers={"x-api-key": api_key, "Content-Type": "application/json"})
+                if get_response.status_code == 200:
+                    generated_sources = get_response.json().get("response")
+                    sources_list = generated_sources.get('sources', [])
+                    sources_list = list(map(lambda x: x["mla_citation"], sources_list))
+                    sources[subtopic_index] = sources_list
+                else:
+                    sources[subtopic_index] = ["Error Source 1", "Error Source 2", "Error Source 3"]
+                
+
+
+
                 # For now, placeholder sources
-                sources[subtopic_index] = [
-                    f"Source 1 for {subtopic}",
-                    f"Source 2 for {subtopic}",
-                    f"Source 3 for {subtopic}"
-                ]
+                # sources[subtopic_index] = [
+                #     f"Source 1 for {subtopic}",
+                #     f"Source 2 for {subtopic}",
+                #     f"Source 3 for {subtopic}"
+                # ]
                 
                 # Update the subtopic in case user modified it
                 if subtopic_index < len(subtopics):
