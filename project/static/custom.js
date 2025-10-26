@@ -5,7 +5,7 @@ for (let i = 0; i < starCount; i++) {
   const star = document.createElement("div");
   star.className = "star";
 
-  // Add color variety
+  /* add color variety */
   const colorRand = Math.random();
   if (colorRand < 0.1) {
     star.style.background = "#ffd700";
@@ -31,7 +31,7 @@ for (let i = 0; i < starCount; i++) {
   starsContainer.appendChild(star);
 }
 
-// Button interaction
+  /* buttons */
 const button = document.getElementById("mainButton");
 const textboxes = document.querySelectorAll(".textbox");
 

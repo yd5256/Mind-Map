@@ -10,7 +10,6 @@
 <div class="form-container animate-pop">
     <h2>Create Your MindSpace</h2>
     
-    <!-- Step 1: Big Idea to Subtopics Form -->
     {% if not main_idea %}
     <div class="big-idea-section">
         <h3>Enter Your Main Idea</h3>
@@ -34,7 +33,6 @@
     </div>
     {% endif %}
     
-    <!-- Step 2: Display Results and Subtopic Forms -->
     {% if main_idea %}
     <div class="mind-map-results">
         <h3>MindSpace for: {{ main_idea }}</h3>
@@ -44,17 +42,14 @@
             <div class="subtopic-item">
                 <h5>Subtopic {{ i + 1 }}:</h5>
                 
-                <!-- Display the current subtopic text -->
                 {% if subtopics and i < subtopics|length %}
                 <p>{{ subtopics[i] }}</p>
                 {% endif %}
                 
-                <!-- Form for each subtopic -->
                 <form method="POST" action="{{ url_for('main.map_page') }}">
                     {{ small_to_source_forms[i].hidden_tag() }}
                     <input type="hidden" name="subtopic_index" value="{{ i }}">
                     
-                    <!-- Hidden fields to preserve state -->
                     <input type="hidden" name="main_idea_hidden" value="{{ main_idea }}">
                     <input type="hidden" name="subtopics_hidden" value="{{ subtopics|join('|||') }}">
                     <input type="hidden" name="sources_hidden" value="{% for idx, source_list in sources.items() %}{{ idx }}:{{ source_list|join(',') }}{% if not loop.last %}|||{% endif %}{% endfor %}">
@@ -81,7 +76,6 @@
                     {{ small_to_source_forms[i].submit(class="btn-secondary space-button") }}
                 </form>
                 
-                <!-- Display sources if they exist for this subtopic -->
                 {% if sources and i in sources %}
                 <div class="sources-section">
                     <h6>Generated Sources for Subtopic {{ i + 1 }}:</h6>

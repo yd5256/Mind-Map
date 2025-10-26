@@ -16,7 +16,7 @@ body {
   color: #eceff4;
 }
 
-/* Starfield and planet (apply site-wide so all pages have the same background elements) */
+/* me when stars! and planets! */
 .stars {
   position: fixed;
   top: 0;
@@ -35,6 +35,7 @@ body {
   animation: twinkle linear infinite;
 }
 
+/* omg this took so damn long */
 .star:nth-child(3n) {
   background: #ffd700;
   box-shadow: 0 0 4px #ffd700;

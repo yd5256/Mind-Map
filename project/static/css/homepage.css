@@ -6,8 +6,6 @@
 
 .back {
   background: rgba(49, 49, 49, 0.5);;
-  /* Mozilla */
-  /* CSS3 */
   position: absolute;
   top: 0;
   left: 0;
@@ -28,7 +26,6 @@
 }
 
 .aside {
-  /* border: 1px yellow solid; */
   position: fixed;
   overflow: auto;
   height: calc(100vh - 68px);
