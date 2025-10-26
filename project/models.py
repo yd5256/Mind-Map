@@ -10,14 +10,3 @@ class User(UserMixin, db.Model):
   rating = db.Column(db.Float, nullable=False, default=0.0)
   location = db.Column(db.String(100))
   isOfficial = db.Column(db.Boolean, nullable=True, default=False)
-
-class Product(db.Model):
-  id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(100), nullable=False)
-  desc = db.Column(db.String(2000), nullable=False)
-  price = db.Column(db.Numeric(5, 2), nullable=False)
-  meetup = db.Column(db.String(100), nullable=False)
-  preferredPayment = db.Column(db.String(1000), nullable=False)
-  condition = db.Column(db.Integer, nullable=False)
-  types = db.Column(db.Integer, nullable=False)
-  user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
