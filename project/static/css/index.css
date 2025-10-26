@@ -224,6 +224,16 @@ body {
     font-size: 0.95rem;
 }
 
+/* Helper classes moved here from inline styles to reduce inline clutter */
+.action-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.inline-form {
+    display: inline;
+}
+
 .subtopic-item h5 {
     margin: 0 0 0.25rem 0; /* tighten title to its content */
     font-size: 1.05rem;
@@ -254,21 +264,20 @@ body {
     margin-bottom: 0.25rem; /* bring the heading closer to subtopic forms */
 }
 
-.sources-section ul {
-    margin: 0.5rem 0 0 1rem;
-}
-
 /* Add spacing between individual source items and ensure there's a clear gap
    between the generate button (form) and the generated sources list. */
 .sources-section {
     margin-top: 0.6rem;
+    text-align: center;
 }
 .sources-section ul {
-    margin-top: 0.4rem;
-    padding-left: 1.1rem;
+    margin: 0.4rem 0 0 0; /* remove left offset */
+    padding: 0; /* remove default ul padding */
+    list-style: none; /* remove bullets */
 }
 .sources-section li {
-    margin-bottom: 0.5rem; /* space between source 1,2,3 */
+    margin: 0.5rem 0; /* spacing between items (keeps previous spacing) */
+    display: block;
 }
 
 /* ensure a visible gap between the generate button/form and the generated sources */
