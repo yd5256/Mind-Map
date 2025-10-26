@@ -9,9 +9,10 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     text-transform: uppercase;
-    overflow: hidden;
+    /* allow the page to scroll when content grows taller than the viewport */
+    overflow: auto;
     background: linear-gradient(to bottom, #0a0e27 0%, #1a1a3e 30%, #2d1b4e 60%, #16213e 100%);
-    height: 100vh;
+    min-height: 100vh;
     position: relative;
 }
 
@@ -132,8 +133,15 @@ body {
     border: 1px solid rgba(255,255,255,0.03);
     border-radius: 12px;
     padding: 1rem;
-    flex: 1 1 300px; /* grow, shrink, base width */
-    max-width: 32%;
+    /* size to content: don't stretch to equal columns; allow wrapping */
+    flex: 0 0 auto;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center; /* center content inside the card */
+    text-align: center;
+    width: auto;
+    min-width: 200px; /* a bit wider for better readability */
+    max-width: 48%; /* cap on extremely long text */
     box-shadow: 0 6px 18px rgba(11,10,30,0.35);
 }
 
@@ -148,8 +156,44 @@ body {
     color: rgba(255,255,255,0.9);
 }
 
+/* Allow subtopic titles and paragraphs to wrap onto multiple lines
+   instead of forcing single-line truncation. This keeps long
+   subtopic text readable on narrow and medium viewports. */
+.subtopic-item h5,
+.subtopic-item p {
+    white-space: normal; /* allow wrapping */
+    overflow-wrap: break-word; /* break long words */
+    word-break: break-word;
+    hyphens: auto;
+}
+
+/* Allow the Mind Map heading to wrap if the main idea is long */
+.mind-map-results h3 {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
 .sources-section ul {
     margin: 0.5rem 0 0 1rem;
+}
+
+/* Add spacing between individual source items and ensure there's a clear gap
+   between the generate button (form) and the generated sources list. */
+.sources-section {
+    margin-top: 0.6rem;
+}
+.sources-section ul {
+    margin-top: 0.4rem;
+    padding-left: 1.1rem;
+}
+.sources-section li {
+    margin-bottom: 0.5rem; /* space between source 1,2,3 */
+}
+
+/* ensure a visible gap between the generate button/form and the generated sources */
+.subtopic-item form + .sources-section {
+    margin-top: 0.8rem;
 }
 
 @media (max-width: 900px) {
@@ -158,6 +202,31 @@ body {
 
 @media (max-width: 600px) {
     .subtopic-item { max-width: 100%; }
+}
+
+/* On wide screens, show three subtopic cards in a row */
+@media (min-width: 900px) {
+    .subtopics-section {
+        justify-content: center;
+    }
+    .subtopic-item {
+        flex: 0 1 calc((100% - 2rem) / 3);
+        max-width: calc((100% - 2rem) / 3);
+        /* increase desktop minimum so cards appear wider on large screens */
+        min-width: 260px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+/* Make source list items wrap so long URLs or titles break onto multiple lines */
+.sources-section li,
+.sources-section li a {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 /* Simultaneous pop-in animation for the map page */
@@ -183,13 +252,37 @@ body {
 
 .form-container {
     margin: 2rem auto; /* vertical space from top/bottom */
-    max-width: 1100px;
+    /* increased max-width so content has more horizontal room and requires less vertical wrapping */
+    max-width: 1400px;
     padding-left: 1rem;
     padding-right: 1rem;
     gap: var(--form-vertical-gap, 1rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center child blocks horizontally */
+    /* keep the form contained within the viewport and allow scrolling when it grows
+       - subtract a conservative amount to allow space for navbar/hero; adjust later if needed */
+    /* Allow the container to grow to fit its content and let the page scroll instead
+       (removes the internal scrollbar that previously appeared). */
+    height: auto;
+    max-height: none;
+    overflow: visible;
 }
 
 h2 {
     font-size: 3rem;
     margin-bottom: var(--form-vertical-gap, 1rem);
+}
+
+/* center form labels/inputs inside each form */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+}
+
+.form-input {
+    margin: 0 auto;
 }
