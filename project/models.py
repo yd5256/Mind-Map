@@ -6,4 +6,5 @@ class User(UserMixin, db.Model):
   name = db.Column(db.String(1000))
   email = db.Column(db.String(100), unique=True)
   password = db.Column(db.String(100))
+  isConfirmed = db.Column(db.Boolean, nullable=False, default=False)
 
