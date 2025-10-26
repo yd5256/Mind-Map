@@ -55,9 +55,6 @@ def map_page():
         if 'big_idea' in request.form and big_to_small_form.validate_on_submit():
             main_idea = big_to_small_form.big_idea.data
 
-            # TODO: Generate 3 subtopics from main_idea
-            # TODO: Make this in .env
-
             POST_URL = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/async"
             GET_URL = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/status"
 
@@ -78,18 +75,6 @@ def map_page():
 
             subtopics = subtopics['subtopics']
 
-
-
-
-
-
-
-            # For now, placeholder subtopics
-            # subtopics = [
-            #     f"Subtopic 1 of {main_idea}",
-            #     f"Subtopic 2 of {main_idea}",  
-            #     f"Subtopic 3 of {main_idea}"
-            # ]
         
         # Check if any of the small-to-source forms were submitted
         elif 'subtopic' in request.form:
@@ -113,7 +98,6 @@ def map_page():
             subtopic = request.form.get('subtopic', '')
             
             if subtopic:
-                # TODO: Generate 3 sources for this subtopic
 
                 POST_URL = "https://api.agent.ai/v1/agent/n1mcu1mwrricwrfk/webhook/0476b719/async"
                 GET_URL = "https://api.agent.ai/v1/agent/n1mcu1mwrricwrfk/webhook/0476b719/status"
@@ -136,14 +120,6 @@ def map_page():
                     sources[subtopic_index] = ["Error Source 1", "Error Source 2", "Error Source 3"]
                 
 
-
-
-                # For now, placeholder sources
-                # sources[subtopic_index] = [
-                #     f"Source 1 for {subtopic}",
-                #     f"Source 2 for {subtopic}",
-                #     f"Source 3 for {subtopic}"
-                # ]
                 
                 # Update the subtopic in case user modified it
                 if subtopic_index < len(subtopics):
@@ -179,8 +155,6 @@ def profile(user_id=None):
         name=current_user.name,
         email=current_user.email)
     return isUserConfirmed(ret)
-
-
 
 
 @main.route("/inactive")

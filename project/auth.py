@@ -130,8 +130,6 @@ def signup_post():
 
   return redirect(url_for("main.inactive"))
 
-  #return redirect(url_for('auth.login'))
-
 @auth.route('/logout')
 @login_required
 def logout():
