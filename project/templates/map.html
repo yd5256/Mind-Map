@@ -8,29 +8,94 @@
 <div class="form-container">
     <h2>Create Your Mind Map</h2>
     
-    <form method="POST" action="{{ url_for('main.map_page') }}">
-        {{ form.hidden_tag() }}  {# CSRF token #}
-        
-        <div class="form-group">
-            {{ form.topic.label(class="form-label") }}
-            {{ form.topic(class="form-input", placeholder="e.g., Machine Learning, Climate Change, etc.") }}
+    <!-- Step 1: Big Idea to Subtopics Form -->
+    {% if not main_idea %}
+    <div class="big-idea-section">
+        <h3>Enter Your Main Idea</h3>
+        <form method="POST" action="{{ url_for('main.map_page') }}">
+            {{ big_to_small_form.hidden_tag() }}
             
-            {% if form.topic.errors %}
-                <div class="error-messages">
-                    {% for error in form.topic.errors %}
-                        <span class="error">{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-        
-        {{ form.submit(class="btn-primary") }}
-    </form>
+            <div class="form-group">
+                {{ big_to_small_form.big_idea.label(class="form-label") }}
+                {{ big_to_small_form.big_idea(class="form-input", placeholder="e.g., Machine Learning, Climate Change, etc.") }}
+                
+                {% if big_to_small_form.big_idea.errors %}
+                    <div class="error-messages">
+                        {% for error in big_to_small_form.big_idea.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            {{ big_to_small_form.submit(class="btn-primary") }}
+        </form>
+    </div>
+    {% endif %}
     
-    {% if topic %}
-    <div class="result">
-        <h3>Mind Map for: {{ topic }}</h3>
-        <!-- Your mind map content will go here -->
+    <!-- Step 2: Display Results and Subtopic Forms -->
+    {% if main_idea %}
+    <div class="mind-map-results">
+        <h3>Mind Map for: {{ main_idea }}</h3>
+        
+        <div class="subtopics-section">
+            <h4>Generated Subtopics:</h4>
+            
+            {% for i in range(3) %}
+            <div class="subtopic-item">
+                <h5>Subtopic {{ i + 1 }}:</h5>
+                
+                <!-- Display the current subtopic text -->
+                {% if subtopics and i < subtopics|length %}
+                <p><strong>Current subtopic:</strong> {{ subtopics[i] }}</p>
+                {% endif %}
+                
+                <!-- Form for each subtopic -->
+                <form method="POST" action="{{ url_for('main.map_page') }}">
+                    {{ small_to_source_forms[i].hidden_tag() }}
+                    <input type="hidden" name="subtopic_index" value="{{ i }}">
+                    
+                    <!-- Hidden fields to preserve state -->
+                    <input type="hidden" name="main_idea_hidden" value="{{ main_idea }}">
+                    <input type="hidden" name="subtopics_hidden" value="{{ subtopics|join('|||') }}">
+                    <input type="hidden" name="sources_hidden" value="{% for idx, source_list in sources.items() %}{{ idx }}:{{ source_list|join(',') }}{% if not loop.last %}|||{% endif %}{% endfor %}">
+                    
+                    <div class="form-group">
+                        {{ small_to_source_forms[i].subtopic.label(class="form-label") }}
+                        {% set current_subtopic = subtopics[i] if subtopics and i < subtopics|length else '' %}
+                        <input type="text" 
+                               id="{{ small_to_source_forms[i].subtopic.id }}" 
+                               name="{{ small_to_source_forms[i].subtopic.name }}" 
+                               class="form-input" 
+                               value="{{ current_subtopic }}"
+                               required>
+                        
+                        {% if small_to_source_forms[i].subtopic.errors %}
+                            <div class="error-messages">
+                                {% for error in small_to_source_forms[i].subtopic.errors %}
+                                    <span class="error">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {{ small_to_source_forms[i].submit(class="btn-secondary") }}
+                </form>
+                
+                <!-- Display sources if they exist for this subtopic -->
+                {% if sources and i in sources %}
+                <div class="sources-section">
+                    <h6>Generated Sources for Subtopic {{ i + 1 }}:</h6>
+                    <ul>
+                        {% for source in sources[i] %}
+                        <li>{{ source }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 </div>
