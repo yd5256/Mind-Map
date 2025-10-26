@@ -12,6 +12,7 @@ source flask_environment/bin/activate
 ```
 
 ## Running Application
+create .env
 ```
 flask run
 ```
