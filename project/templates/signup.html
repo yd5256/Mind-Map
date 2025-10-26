@@ -4,37 +4,39 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
+{% block title %}Sign Up — MindSpace{% endblock %}
+
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title">Sign Up</h3>
-    <div class="box">
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-          <div class="notification is-danger">
-              {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
-          </div>
-      {% endif %}
-      {% endwith %}
+<div class="form-container animate-pop">
+    <h2>Sign Up</h2>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="error-messages" style="margin-bottom:0.6rem;">
+            <div class="notification is-danger">
+                {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+            </div>
+        </div>
+    {% endif %}
+    {% endwith %}
+
+    <div class="form-box">
         <form method="POST" action="/signup">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="email" name="email" placeholder="Email" autofocus="">
-                </div>
+            <div class="form-group">
+                <input class="form-input textbox" type="email" name="email" placeholder="Email" autofocus required>
             </div>
 
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="text" name="name" placeholder="Name" autofocus="">
-                </div>
+            <div class="form-group">
+                <input class="form-input textbox" type="text" name="name" placeholder="Name" required>
             </div>
 
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Password">
-                </div>
+            <div class="form-group">
+                <input class="form-input textbox" type="password" name="password" placeholder="Password" required>
             </div>
 
-            <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+            <div style="width:100%; display:flex; justify-content:center;">
+                <button class="space-button" type="submit">Sign Up</button>
+            </div>
         </form>
     </div>
 </div>

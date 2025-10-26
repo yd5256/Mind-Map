@@ -40,6 +40,33 @@ body {
     transform: translate(-50%, -50%);
 }
 
+/* Unique styling for the main page title */
+#main-title,
+.main-title-large {
+    /* larger and more prominent than other headings */
+    font-size: 6.5rem;
+    letter-spacing: 0.45rem;
+    font-weight: 300;
+    text-transform: uppercase;
+}
+
+/* Make the title responsive so it fits on smaller screens */
+@media (max-width: 900px) {
+    #main-title,
+    .main-title-large {
+        font-size: 3.8rem;
+        letter-spacing: 0.25rem;
+    }
+}
+
+@media (max-width: 600px) {
+    #main-title,
+    .main-title-large {
+        font-size: 2.4rem;
+        letter-spacing: 0.12rem;
+    }
+}
+
 .button-container {
     display: flex;
     gap: 20px;
@@ -62,6 +89,12 @@ body {
     /* spacing so buttons don't sit flush against text or each other */
     margin-top: var(--form-vertical-gap, 1rem);
     margin-right: .6rem;
+}
+
+/* Specifically increase the gap above the "Generate Subtopics" button
+   on the map page so it sits further from the inputs above it. */
+.big-idea-section .space-button {
+    margin-top: 2rem !important;
 }
 
 .space-button:hover {
@@ -121,11 +154,11 @@ body {
 /* Layout: display subtopics side-by-side on wider screens */
 .subtopics-section {
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem; /* slightly tighter between cards */
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 1rem;
+    margin-top: 0.35rem; /* reduce gap between heading and subtopics */
 }
 
 .subtopic-item {
@@ -145,8 +178,54 @@ body {
     box-shadow: 0 6px 18px rgba(11,10,30,0.35);
 }
 
+/* Form box styling: match the visual style of subtopic cards for login/signup */
+.form-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 6px 18px rgba(11,10,30,0.35);
+    width: 100%;
+    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    /* separate stacked form boxes so they don't look glued together */
+    margin-bottom: var(--form-vertical-gap, 1rem);
+}
+
+/* Ensure form groups have breathing room vertically */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 520px;
+    margin-bottom: 0.6rem;
+}
+
+/* Make inputs fill the form-box width for visual consistency */
+.form-box .form-input,
+.form-box .textbox {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Error messages spacing and checkbox label alignment */
+.error-messages {
+    margin-bottom: 0.6rem;
+}
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center the checkbox+label horizontally */
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.95rem;
+}
+
 .subtopic-item h5 {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.25rem 0; /* tighten title to its content */
     font-size: 1.05rem;
     color: rgba(255,255,255,0.95);
 }
@@ -172,6 +251,7 @@ body {
     white-space: normal;
     overflow-wrap: break-word;
     word-break: break-word;
+    margin-bottom: 0.25rem; /* bring the heading closer to subtopic forms */
 }
 
 .sources-section ul {
@@ -194,6 +274,24 @@ body {
 /* ensure a visible gap between the generate button/form and the generated sources */
 .subtopic-item form + .sources-section {
     margin-top: 0.8rem;
+}
+
+/* Override previous padding/indent for sources and center the list items.
+   This removes the left bullet/indent and centers each source line. */
+.sources-section {
+    text-align: center;
+}
+.sources-section ul {
+    margin: 0.4rem 0 0 0; /* remove left offset */
+    padding: 0; /* remove default ul padding */
+    list-style: none; /* remove bullets */
+}
+.sources-section li {
+    margin: 0.5rem 0; /* spacing between items (keeps previous spacing) */
+    display: block;
+}
+.sources-section li a {
+    display: inline-block; /* allow wrapping and centering for links */
 }
 
 @media (max-width: 900px) {
@@ -260,18 +358,26 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center; /* center child blocks horizontally */
-    /* keep the form contained within the viewport and allow scrolling when it grows
-       - subtract a conservative amount to allow space for navbar/hero; adjust later if needed */
-    /* Allow the container to grow to fit its content and let the page scroll instead
-       (removes the internal scrollbar that previously appeared). */
+    /* Allow the container to grow to fit its content and let the page scroll instead */
     height: auto;
     max-height: none;
     overflow: visible;
 }
 
+/* Tighter heading spacing: make section titles sit closer to content */
+.form-container h2,
+.form-box h2,
 h2 {
     font-size: 3rem;
-    margin-bottom: var(--form-vertical-gap, 1rem);
+    margin-bottom: 0.15rem !important;
+}
+
+/* Reduce default spacing under h3 headings (used on the map page) so
+   titles sit closer to their related input boxes */
+h3,
+.form-container h3,
+.form-box h3 {
+    margin-bottom: 0.12rem !important;
 }
 
 /* center form labels/inputs inside each form */
@@ -281,6 +387,8 @@ h2 {
     align-items: center;
     width: 100%;
     max-width: 520px;
+    /* tighter spacing between fields to compact the form */
+    margin-bottom: 0.2rem !important;
 }
 
 .form-input {

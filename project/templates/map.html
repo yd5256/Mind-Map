@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
+{% block title %}Map — MindSpace{% endblock %}
+
 {% block content %}
 <div class="form-container animate-pop">
     <h2>Create Your MindSpace</h2>
@@ -35,7 +37,7 @@
     <!-- Step 2: Display Results and Subtopic Forms -->
     {% if main_idea %}
     <div class="mind-map-results">
-        <h3>Mind Map for: {{ main_idea }}</h3>
+        <h3>MindSpace for: {{ main_idea }}</h3>
         
         <div class="subtopics-section">
             {% for i in range(3) %}
