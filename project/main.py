@@ -4,6 +4,8 @@ from . import db
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, HiddenField
 from wtforms.validators import InputRequired, Length
+import requests, json
+from time import sleep
 
 class BigToSmallForm(FlaskForm):
     big_idea = StringField('Main Idea', validators=[InputRequired(), Length(min=1, max=500)])
@@ -36,13 +38,43 @@ def map_page():
         # Check if it's the big-to-small form submission
         if 'big_idea' in request.form and big_to_small_form.validate_on_submit():
             main_idea = big_to_small_form.big_idea.data
+
             # TODO: Generate 3 subtopics from main_idea
+            # TODO: Make this in .env
+            api_key = "3dSjaKpyDOMNioQeCnWhzVTNPCRfyE5OiSOB1704zHcGJvNTeRJ1CpaJAl18cUoj"
+            post_url = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/async"
+            get_url = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/status"
+
+            post_response = requests.post(post_url, json={"big_idea": main_idea, "num_small": 3}, headers={"x-api-key": api_key, "Content-Type": "application/json"})
+            run_id = post_response.json().get("run_id")
+
+            subtopics = {}
+            get_response = requests.get(f"{get_url}/{run_id}", headers={"x-api-key": api_key, "Content-Type": "application/json"})
+            timeout = 0
+            while (get_response.status_code == 204) and (timeout < 60):
+                timeout += 5
+                sleep(5)
+                get_response = requests.get(f"{get_url}/{run_id}", headers={"x-api-key": api_key, "Content-Type": "application/json"})
+            if get_response.status_code == 200:
+                subtopics = get_response.json().get("response")
+            else:
+                subtopics = ["Error", "Error", "Error"]
+            print(subtopics)
+            
+            subtopics = subtopics['subtopics']
+
+
+
+
+
+
+
             # For now, placeholder subtopics
-            subtopics = [
-                f"Subtopic 1 of {main_idea}",
-                f"Subtopic 2 of {main_idea}",  
-                f"Subtopic 3 of {main_idea}"
-            ]
+            # subtopics = [
+            #     f"Subtopic 1 of {main_idea}",
+            #     f"Subtopic 2 of {main_idea}",  
+            #     f"Subtopic 3 of {main_idea}"
+            # ]
         
         # Check if any of the small-to-source forms were submitted
         elif 'subtopic' in request.form:

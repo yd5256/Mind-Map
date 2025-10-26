@@ -93,7 +93,9 @@
             </div>
             {% endfor %}
         </div>
-            <button type="button" class="btn-secondary space-button" onclick="window.location.href='{{ url_for('main.map_page') }}'">Reset</button>
+            <form method="GET" action="{{ url_for('main.map_page') }}" style="display: inline;">
+                <button type="submit" class="btn-secondary space-button">Reset</button>
+            </form>
     </div>
     {% endif %}
 </div>
