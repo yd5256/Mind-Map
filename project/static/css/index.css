@@ -38,3 +38,149 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.button-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.space-button {
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 0.2rem;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #4a3d6e, #2d1b4e);
+    border: 2px solid rgba(139, 111, 180, 0.5);
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(139, 111, 180, 0.3);
+    /* spacing so buttons don't sit flush against text or each other */
+    margin-top: 0.6rem;
+}
+
+.space-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(139, 111, 180, 0.6);
+    border-color: rgba(139, 111, 180, 0.8);
+}
+
+.textbox {
+    padding: 12px 20px;
+    font-size: 1rem;
+    background: rgba(26, 26, 62, 0.6);
+    border: 2px solid rgba(139, 111, 180, 0.4);
+    color: white;
+    border-radius: 30px;
+    outline: none;
+    transition: all 0.3s ease;
+    width: 200px;
+    opacity: 0;
+    transform: scale(0);
+    animation: appearBox 0.5s ease forwards;
+}
+
+.textbox:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.textbox:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.textbox:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.textbox::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.textbox:focus {
+    border-color: rgba(139, 111, 180, 0.8);
+    box-shadow: 0 0 20px rgba(139, 111, 180, 0.4);
+    background: rgba(26, 26, 62, 0.8);
+}
+
+@keyframes appearBox {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.hidden {
+    display: none;
+}
+
+/* Layout: display subtopics side-by-side on wider screens */
+.subtopics-section {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.subtopic-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 1rem;
+    flex: 1 1 300px; /* grow, shrink, base width */
+    max-width: 32%;
+    box-shadow: 0 6px 18px rgba(11,10,30,0.35);
+}
+
+.subtopic-item h5 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.95);
+}
+
+.subtopic-item p {
+    margin: 0 0 0.75rem 0;
+    color: rgba(255,255,255,0.9);
+}
+
+.sources-section ul {
+    margin: 0.5rem 0 0 1rem;
+}
+
+@media (max-width: 900px) {
+    .subtopic-item { max-width: 48%; }
+}
+
+@media (max-width: 600px) {
+    .subtopic-item { max-width: 100%; }
+}
+
+/* Simultaneous pop-in animation for the map page */
+.animate-pop * {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+    animation: popIn 360ms ease forwards;
+}
+
+@keyframes popIn {
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Small form container spacing so the form has breathing room */
+.form-container {
+    margin: 3rem auto; /* vertical space from top/bottom */
+    max-width: 1100px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+h2 {
+    font-size: 3rem;
+}

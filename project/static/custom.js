@@ -30,3 +30,14 @@ for (let i = 0; i < starCount; i++) {
 
   starsContainer.appendChild(star);
 }
+
+// Button interaction
+const button = document.getElementById("mainButton");
+const textboxes = document.querySelectorAll(".textbox");
+
+button.addEventListener("click", () => {
+  button.classList.add("hidden");
+  textboxes.forEach((textbox) => {
+    textbox.classList.remove("hidden");
+  });
+});

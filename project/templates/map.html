@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="form-container">
-    <h2>Create Your Mind Map</h2>
+<div class="form-container animate-pop">
+    <h2>Create Your MindSpace</h2>
     
     <!-- Step 1: Big Idea to Subtopics Form -->
     {% if not main_idea %}
@@ -16,8 +16,7 @@
             {{ big_to_small_form.hidden_tag() }}
             
             <div class="form-group">
-                {{ big_to_small_form.big_idea.label(class="form-label") }}
-                {{ big_to_small_form.big_idea(class="form-input", placeholder="e.g., Machine Learning, Climate Change, etc.") }}
+                {{ big_to_small_form.big_idea(class="form-input textbox", placeholder="e.g., Machine Learning, Climate Change, etc.") }}
                 
                 {% if big_to_small_form.big_idea.errors %}
                     <div class="error-messages">
@@ -28,7 +27,7 @@
                 {% endif %}
             </div>
             
-            {{ big_to_small_form.submit(class="btn-primary") }}
+            {{ big_to_small_form.submit(class="btn-primary space-button") }}
         </form>
     </div>
     {% endif %}
@@ -39,15 +38,13 @@
         <h3>Mind Map for: {{ main_idea }}</h3>
         
         <div class="subtopics-section">
-            <h4>Generated Subtopics:</h4>
-            
             {% for i in range(3) %}
             <div class="subtopic-item">
                 <h5>Subtopic {{ i + 1 }}:</h5>
                 
                 <!-- Display the current subtopic text -->
                 {% if subtopics and i < subtopics|length %}
-                <p><strong>Current subtopic:</strong> {{ subtopics[i] }}</p>
+                <p>{{ subtopics[i] }}</p>
                 {% endif %}
                 
                 <!-- Form for each subtopic -->
@@ -63,12 +60,12 @@
                     <div class="form-group">
                         {{ small_to_source_forms[i].subtopic.label(class="form-label") }}
                         {% set current_subtopic = subtopics[i] if subtopics and i < subtopics|length else '' %}
-                        <input type="text" 
-                               id="{{ small_to_source_forms[i].subtopic.id }}" 
-                               name="{{ small_to_source_forms[i].subtopic.name }}" 
-                               class="form-input" 
-                               value="{{ current_subtopic }}"
-                               required>
+               <input type="text" 
+                   id="{{ small_to_source_forms[i].subtopic.id }}" 
+                   name="{{ small_to_source_forms[i].subtopic.name }}" 
+                   class="form-input textbox" 
+                   value="{{ current_subtopic }}"
+                   required>
                         
                         {% if small_to_source_forms[i].subtopic.errors %}
                             <div class="error-messages">
@@ -79,7 +76,7 @@
                         {% endif %}
                     </div>
                     
-                    {{ small_to_source_forms[i].submit(class="btn-secondary") }}
+                    {{ small_to_source_forms[i].submit(class="btn-secondary space-button") }}
                 </form>
                 
                 <!-- Display sources if they exist for this subtopic -->
@@ -96,6 +93,7 @@
             </div>
             {% endfor %}
         </div>
+            <button type="button" class="btn-secondary space-button" onclick="window.location.href='{{ url_for('main.map_page') }}'">Reset</button>
     </div>
     {% endif %}
 </div>
