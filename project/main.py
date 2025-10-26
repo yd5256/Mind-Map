@@ -6,6 +6,17 @@ from wtforms import StringField, SubmitField, HiddenField
 from wtforms.validators import InputRequired, Length
 import requests, json
 from time import sleep
+import os
+from dotenv import load_dotenv
+from flask_optional_routes import OptionalRoutes
+
+load_dotenv()
+
+def isUserConfirmed(func):
+    if current_user.isConfirmed is False:
+        flash("Please confirm your account!", "warning")
+        return redirect(url_for("main.inactive"))
+    return func
 
 class BigToSmallForm(FlaskForm):
     big_idea = StringField('Main Idea', validators=[InputRequired(), Length(min=1, max=500)])
@@ -18,11 +29,16 @@ class SmallToSourceForm(FlaskForm):
 
 main = Blueprint('main', __name__)
 
+optional = OptionalRoutes(main)
+
+API_KEY = os.getenv("API_KEY")
+
 @main.route('/')
 def index():
   return render_template('index.html')
 
 @main.route('/map', methods=['GET', 'POST'])
+@login_required
 def map_page():
     big_to_small_form = BigToSmallForm()
     
@@ -41,26 +57,25 @@ def map_page():
 
             # TODO: Generate 3 subtopics from main_idea
             # TODO: Make this in .env
-            api_key = "3dSjaKpyDOMNioQeCnWhzVTNPCRfyE5OiSOB1704zHcGJvNTeRJ1CpaJAl18cUoj"
-            post_url = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/async"
-            get_url = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/status"
 
-            post_response = requests.post(post_url, json={"big_idea": main_idea, "num_small": 3}, headers={"x-api-key": api_key, "Content-Type": "application/json"})
+            POST_URL = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/async"
+            GET_URL = "https://api.agent.ai/v1/agent/kh2fyfmqponb9vhm/webhook/7dbe8317/status"
+
+            post_response = requests.post(POST_URL, json={"big_idea": main_idea, "num_small": 3}, headers={"x-api-key": API_KEY, "Content-Type": "application/json"})
             run_id = post_response.json().get("run_id")
 
             subtopics = {}
-            get_response = requests.get(f"{get_url}/{run_id}", headers={"x-api-key": api_key, "Content-Type": "application/json"})
+            get_response = requests.get(f"{GET_URL}/{run_id}", headers={"x-api-key": API_KEY, "Content-Type": "application/json"})
             timeout = 0
             while (get_response.status_code == 204) and (timeout < 60):
                 timeout += 5
                 sleep(5)
-                get_response = requests.get(f"{get_url}/{run_id}", headers={"x-api-key": api_key, "Content-Type": "application/json"})
+                get_response = requests.get(f"{GET_URL}/{run_id}", headers={"x-api-key": API_KEY, "Content-Type": "application/json"})
             if get_response.status_code == 200:
                 subtopics = get_response.json().get("response")
             else:
-                subtopics = ["Error", "Error", "Error"]
-            print(subtopics)
-            
+                subtopics = ["Error Subtopic 1", "Error Subtopic 2", "Error Subtopic 3"]
+
             subtopics = subtopics['subtopics']
 
 
@@ -99,12 +114,36 @@ def map_page():
             
             if subtopic:
                 # TODO: Generate 3 sources for this subtopic
+
+                POST_URL = "https://api.agent.ai/v1/agent/n1mcu1mwrricwrfk/webhook/0476b719/async"
+                GET_URL = "https://api.agent.ai/v1/agent/n1mcu1mwrricwrfk/webhook/0476b719/status"
+
+                post_response = requests.post(POST_URL, json={"subtopic": subtopic, "num_sources": 3}, headers={"x-api-key": API_KEY, "Content-Type": "application/json"})
+                run_id = post_response.json().get("run_id")
+
+                get_response = requests.get(f"{GET_URL}/{run_id}", headers={"x-api-key": API_KEY, "Content-Type": "application/json"})
+                timeout = 0
+                while (get_response.status_code == 204) and (timeout < 60):
+                    timeout += 5
+                    sleep(5)
+                    get_response = requests.get(f"{GET_URL}/{run_id}", headers={"x-api-key": API_KEY, "Content-Type": "application/json"})
+                if get_response.status_code == 200:
+                    generated_sources = get_response.json().get("response")
+                    sources_list = generated_sources.get('sources', [])
+                    sources_list = list(map(lambda x: x["mla_citation"], sources_list))
+                    sources[subtopic_index] = sources_list
+                else:
+                    sources[subtopic_index] = ["Error Source 1", "Error Source 2", "Error Source 3"]
+                
+
+
+
                 # For now, placeholder sources
-                sources[subtopic_index] = [
-                    f"Source 1 for {subtopic}",
-                    f"Source 2 for {subtopic}",
-                    f"Source 3 for {subtopic}"
-                ]
+                # sources[subtopic_index] = [
+                #     f"Source 1 for {subtopic}",
+                #     f"Source 2 for {subtopic}",
+                #     f"Source 3 for {subtopic}"
+                # ]
                 
                 # Update the subtopic in case user modified it
                 if subtopic_index < len(subtopics):
@@ -116,16 +155,37 @@ def map_page():
             small_to_source_forms[i].subtopic.data = subtopic
             small_to_source_forms[i].subtopic_index.data = str(i)
     
-    return render_template('map.html', 
+    ret = render_template('map.html', 
                          big_to_small_form=big_to_small_form,
                          small_to_source_forms=small_to_source_forms,
                          main_idea=main_idea,
                          subtopics=subtopics,
                          sources=sources)
+    return isUserConfirmed(ret)
 
-@main.route('/profile')
+@main.route('/profile/')
+@main.route('/profile/<int:user_id>/')
 @login_required
-def profile():
-  return render_template('profile.html', name=current_user.name)
+def profile(user_id=None):
+    if user_id is not None:
+      user = User.query.get(user_id)
+      ret = render_template('profile.html', 
+        id=user.id,
+        name=user.name,
+        email=user.email)
+      return isUserConfirmed(ret)
+    ret = render_template('profile.html', 
+        id=current_user.id,
+        name=current_user.name,
+        email=current_user.email)
+    return isUserConfirmed(ret)
 
 
+
+
+@main.route("/inactive")
+@login_required
+def inactive():
+    if current_user.isConfirmed:
+        return redirect(url_for("main.profile"))
+    return render_template("inactive.html")
