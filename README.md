@@ -2,7 +2,7 @@
 
 ## Installing Dependencies
 ```
-pip install flask flask-sqlalchemy flask-login
+pip install flask flask-sqlalchemy flask-login flask-wtf wtforms flask-mail python-dotenv requests itsdangerous werkzeug flask-optional-routes
 ```
 
 ## Starting Virtual Environment
@@ -11,7 +11,7 @@ python -m venv flask_environment
 source flask_environment/bin/activate
 ```
 
-## Running Dev Server
+## Running Application
 ```
 flask run
 ```
